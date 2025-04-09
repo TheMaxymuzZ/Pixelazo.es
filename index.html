@@ -8,12 +8,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #0d0d1a;
-      background-image: url('https://i.ibb.co/5KcGPmn/pixel-grid-dark.png');
-      background-size: cover;
+      background-color: #1a1a2e;
       font-family: 'Press Start 2P', monospace;
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
     }
     .pixel-shadow {
       text-shadow: 0 0 8px #ff006e;
@@ -39,27 +37,23 @@
       from { opacity: 0.3; transform: scale(0.8); }
       to { opacity: 1; transform: scale(1.2); }
     }
-    .ship {
-      position: absolute;
-      bottom: 20px;
-      left: -100px;
-      animation: fly 15s linear infinite;
-    }
-    @keyframes fly {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(120vw); }
+    #game {
+      width: 100%;
+      max-width: 100vw;
+      height: 180px;
+      display: block;
+      background: #1a1a2e;
+      border: none;
+      margin: 2rem 0;
     }
   </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen text-white text-center px-6">
+<body class="flex flex-col items-center justify-start min-h-screen text-white text-center px-6 pt-12">
   <!-- Estrellas animadas -->
   <div class="star" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
   <div class="star" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
   <div class="star" style="top: 50%; left: 40%; animation-delay: 0.5s;"></div>
   <div class="star" style="top: 80%; left: 10%; animation-delay: 1.5s;"></div>
-
-  <!-- Nave pixelada animada -->
-  <img src="https://i.ibb.co/dQHxQFH/pixel-ship.gif" alt="Pixel Ship" class="ship w-12">
 
   <div class="pixel-border p-8 rounded-xl bg-[#1a1a2e]/90 max-w-lg relative z-10">
     <h1 class="text-2xl text-[#ff006e] pixel-shadow mb-4">PIXELAZO</h1>
@@ -71,5 +65,105 @@
       <p>Contacto: <a href="mailto:contacto.pixelazo@gmail.com" class="text-[#3a86ff] hover:underline">contacto.pixelazo@gmail.com</a></p>
     </div>
   </div>
+
+  <!-- Mini juego estilo Mario Bros con fondo a juego -->
+  <canvas id="game" width="320" height="160"></canvas>
+
+  <script>
+    const canvas = document.getElementById("game");
+    const ctx = canvas.getContext("2d");
+
+    const player = {
+      x: 30,
+      y: 110,
+      width: 16,
+      height: 16,
+      vy: 0,
+      jump: -4,
+      gravity: 0.25,
+      grounded: true,
+      sprite: new Image(),
+    };
+    player.sprite.src = "https://i.ibb.co/1RWYZRF/mario-run.gif";
+
+    const obstacle = {
+      x: 320,
+      y: 110,
+      width: 16,
+      height: 16,
+      sprite: new Image(),
+    };
+    obstacle.sprite.src = "https://i.ibb.co/bFsDdT5/goomba.png";
+
+    const groundY = 126;
+    let gameStarted = false;
+
+    function drawPlayer() {
+      ctx.drawImage(player.sprite, player.x, player.y, player.width, player.height);
+    }
+
+    function drawObstacle() {
+      ctx.drawImage(obstacle.sprite, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+    }
+
+    function startGame() {
+      if (!gameStarted) {
+        gameStarted = true;
+        loop();
+      }
+      if (player.grounded) {
+        player.vy = player.jump;
+        player.grounded = false;
+      }
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.code === "Space" || e.code === "ArrowUp") {
+        startGame();
+      }
+    });
+
+    document.addEventListener("touchstart", () => {
+      startGame();
+    });
+
+    function loop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (gameStarted) {
+        ctx.fillStyle = "#3a86ff";
+        ctx.fillRect(0, groundY, canvas.width, 8);
+
+        player.vy += player.gravity;
+        player.y += player.vy;
+        if (player.y >= 110) {
+          player.y = 110;
+          player.vy = 0;
+          player.grounded = true;
+        }
+
+        obstacle.x -= 2;
+        if (obstacle.x + obstacle.width < 0) {
+          obstacle.x = 320 + Math.random() * 100;
+        }
+
+        drawObstacle();
+
+        if (
+          player.x < obstacle.x + obstacle.width &&
+          player.x + player.width > obstacle.x &&
+          player.y < obstacle.y + obstacle.height &&
+          player.y + player.height > obstacle.y
+        ) {
+          obstacle.x = 320;
+        }
+      }
+
+      drawPlayer();
+      requestAnimationFrame(loop);
+    }
+
+    drawPlayer();
+  </script>
 </body>
 </html>
