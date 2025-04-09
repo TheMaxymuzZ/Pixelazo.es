@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pixelazo - En construcción</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -26,34 +26,9 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0; }
     }
-    .star {
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: #fff;
-      animation: twinkle 2s infinite ease-in-out alternate;
-    }
-    @keyframes twinkle {
-      from { opacity: 0.3; transform: scale(0.8); }
-      to { opacity: 1; transform: scale(1.2); }
-    }
-    #game {
-      width: 100%;
-      max-width: 100vw;
-      height: 180px;
-      display: block;
-      background: #1a1a2e;
-      border: none;
-      margin: 2rem 0;
-    }
   </style>
 </head>
 <body class="flex flex-col items-center justify-start min-h-screen text-white text-center px-6 pt-12">
-  <!-- Estrellas animadas -->
-  <div class="star" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
-  <div class="star" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
-  <div class="star" style="top: 50%; left: 40%; animation-delay: 0.5s;"></div>
-  <div class="star" style="top: 80%; left: 10%; animation-delay: 1.5s;"></div>
 
   <div class="pixel-border p-8 rounded-xl bg-[#1a1a2e]/90 max-w-lg relative z-10">
     <h1 class="text-2xl text-[#ff006e] pixel-shadow mb-4">PIXELAZO</h1>
@@ -66,104 +41,11 @@
     </div>
   </div>
 
-  <!-- Mini juego estilo Mario Bros con fondo a juego -->
-  <canvas id="game" width="320" height="160"></canvas>
-
+  <!-- Mini juego deshabilitado temporalmente -->
+  <!-- <canvas id="game" width="320" height="160"></canvas>
   <script>
-    const canvas = document.getElementById("game");
-    const ctx = canvas.getContext("2d");
+    // Código del juego deshabilitado temporalmente
+  </script> -->
 
-    const player = {
-      x: 30,
-      y: 110,
-      width: 16,
-      height: 16,
-      vy: 0,
-      jump: -4,
-      gravity: 0.25,
-      grounded: true,
-      sprite: new Image(),
-    };
-    player.sprite.src = "https://i.ibb.co/1RWYZRF/mario-run.gif";
-
-    const obstacle = {
-      x: 320,
-      y: 110,
-      width: 16,
-      height: 16,
-      sprite: new Image(),
-    };
-    obstacle.sprite.src = "https://i.ibb.co/bFsDdT5/goomba.png";
-
-    const groundY = 126;
-    let gameStarted = false;
-
-    function drawPlayer() {
-      ctx.drawImage(player.sprite, player.x, player.y, player.width, player.height);
-    }
-
-    function drawObstacle() {
-      ctx.drawImage(obstacle.sprite, obstacle.x, obstacle.y, obstacle.width, obstacle.height);
-    }
-
-    function startGame() {
-      if (!gameStarted) {
-        gameStarted = true;
-        loop();
-      }
-      if (player.grounded) {
-        player.vy = player.jump;
-        player.grounded = false;
-      }
-    }
-
-    document.addEventListener("keydown", (e) => {
-      if (e.code === "Space" || e.code === "ArrowUp") {
-        startGame();
-      }
-    });
-
-    document.addEventListener("touchstart", () => {
-      startGame();
-    });
-
-    function loop() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      if (gameStarted) {
-        ctx.fillStyle = "#3a86ff";
-        ctx.fillRect(0, groundY, canvas.width, 8);
-
-        player.vy += player.gravity;
-        player.y += player.vy;
-        if (player.y >= 110) {
-          player.y = 110;
-          player.vy = 0;
-          player.grounded = true;
-        }
-
-        obstacle.x -= 2;
-        if (obstacle.x + obstacle.width < 0) {
-          obstacle.x = 320 + Math.random() * 100;
-        }
-
-        drawObstacle();
-
-        if (
-          player.x < obstacle.x + obstacle.width &&
-          player.x + player.width > obstacle.x &&
-          player.y < obstacle.y + obstacle.height &&
-          player.y + player.height > obstacle.y
-        ) {
-          obstacle.x = 320;
-        }
-      }
-
-      drawPlayer();
-      requestAnimationFrame(loop);
-    }
-
-    drawPlayer();
-  </script>
 </body>
 </html>
