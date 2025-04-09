@@ -3,54 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pixelazo.es | En construcción</title>
+  <title>Pixelazo - En construcción</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #0f0f0f;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
+      background-color: #0d0d1a;
+      background-image: url('https://i.ibb.co/5KcGPmn/pixel-grid-dark.png');
+      background-size: cover;
+      font-family: 'Press Start 2P', monospace;
+      position: relative;
+      overflow: hidden;
     }
-    h1 {
-      font-size: 3em;
-      margin-bottom: 0.5em;
-      color: #00ffd1;
+    .pixel-shadow {
+      text-shadow: 0 0 8px #ff006e;
     }
-    p {
-      font-size: 1.2em;
-      color: #ccc;
+    .pixel-border {
+      border: 4px solid #3a86ff;
     }
-    .logo {
-      font-size: 4em;
-      font-weight: bold;
-      color: #ff0059;
-      margin-bottom: 0.3em;
+    .animate-blink {
+      animation: blink 1.2s steps(2, start) infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+    .star {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      animation: twinkle 2s infinite ease-in-out alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.3; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1.2); }
+    }
+    .ship {
+      position: absolute;
+      bottom: 20px;
+      left: -100px;
+      animation: fly 15s linear infinite;
+    }
+    @keyframes fly {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(120vw); }
     }
   </style>
 </head>
-<body>
-  <div class="logo">Pixelazo.es</div>
-  <h1>¡Estamos cargando el próximo nivel!</h1>
-  <p>La web está en construcción. Muy pronto noticias y novedades del mundo gamer.</p>
-  
+<body class="flex flex-col items-center justify-center min-h-screen text-white text-center px-6">
+  <!-- Estrellas animadas -->
+  <div class="star" style="top: 10%; left: 20%; animation-delay: 0s;"></div>
+  <div class="star" style="top: 30%; left: 70%; animation-delay: 1s;"></div>
+  <div class="star" style="top: 50%; left: 40%; animation-delay: 0.5s;"></div>
+  <div class="star" style="top: 80%; left: 10%; animation-delay: 1.5s;"></div>
 
-  <footer>
-    <p>&copy; <span id="current-year"></span> Pixelazo.es. Todos los derechos reservados.</p>
-    <p>Contacto: <a href="mailto:contacto.pixelazo@gmail.com">contacto.pixelazo@gmail.com</a></p>
-  </footer>
+  <!-- Nave pixelada animada -->
+  <img src="https://i.ibb.co/dQHxQFH/pixel-ship.gif" alt="Pixel Ship" class="ship w-12">
 
-  <script>
-    document.getElementById("current-year").textContent = new Date().getFullYear();
-  </script>
-
-
-
+  <div class="pixel-border p-8 rounded-xl bg-[#1a1a2e]/90 max-w-lg relative z-10">
+    <h1 class="text-2xl text-[#ff006e] pixel-shadow mb-4">PIXELAZO</h1>
+    <p class="text-sm text-[#3a86ff] mb-4">Noticias, análisis, curiosidades y nostalgia retro del mundo gamer.</p>
+    <p class="text-xs text-gray-300">Estamos cargando los mejores píxeles para ti. ¡Muy pronto estaremos online!</p>
+    <p class="mt-6 text-[10px] animate-blink">[EN CONSTRUCCIÓN...]</p>
+    <div class="mt-6 text-[10px] text-gray-400">
+      <p>&copy; 2025 Pixelazo. Todos los derechos reservados.</p>
+      <p>Contacto: <a href="mailto:contacto.pixelazo@gmail.com" class="text-[#3a86ff] hover:underline">contacto.pixelazo@gmail.com</a></p>
+    </div>
+  </div>
 </body>
 </html>
